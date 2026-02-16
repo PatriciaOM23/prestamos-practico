@@ -4,6 +4,6 @@ public class Proyector extends Material{
     private int lumens;
     @Override
     String getTipo() {
-        return "";
+        return "proyector";
     }
 }

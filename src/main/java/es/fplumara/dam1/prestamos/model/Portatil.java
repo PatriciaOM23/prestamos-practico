@@ -4,6 +4,6 @@ public class Portatil extends Material {
     private int ramGB;
     @Override
     String getTipo() {
-        return "";
+        return "portatil";
     }
 }
