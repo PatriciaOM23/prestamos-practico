@@ -27,8 +27,15 @@ class PrestamosServiceTest {
     //
     // Requisito: usar mocks de repositorios y verify(...)
 
+    @Test
     void crearPrestamo_ok_cambiaEstado_y_guarda(){
-        pr
+        Material material = new Portatil("1","laptop hp", EstadoMaterial.DISPONIBLE);
+        when(materialRepository.findById("1")).thenReturn(Optional.of(material));
+        Prestamo prestamo = prestamoService.crearPrestamo(material.getId(),"Ivan",LocalDate.now());
+        verify(prestamoRepository).save(any(Prestamo.class));
+        assertEquals(EstadoMaterial.PRESTADO,material.getEstadoMaterial());
     }
 
 }
+
+
