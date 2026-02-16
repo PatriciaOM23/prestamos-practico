@@ -9,6 +9,6 @@ public class Portatil extends Material {
 
     @Override
     String getTipo() {
-        return "";
+        return "portatil";
     }
 }
