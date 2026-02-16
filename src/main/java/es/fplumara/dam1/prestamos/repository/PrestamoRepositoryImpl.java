@@ -1,4 +1,11 @@
 package es.fplumara.dam1.prestamos.repository;
 
-public class PrestamoRepositoryImpl {
+import es.fplumara.dam1.prestamos.model.Identificable;
+import es.fplumara.dam1.prestamos.model.Prestamo;
+
+import java.util.List;
+import java.util.Optional;
+
+public class PrestamoRepositoryImpl extends BaseRepository<Prestamo> {
+
 }
