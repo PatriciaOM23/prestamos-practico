@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BaseRepository<T extends Identificable> implements Repository<T> {
-    Map<String,T> datos = new HashMap<>();
+    private Map<String,T> datos = new HashMap<>();
     @Override
     public void save(T element) {
     datos.put(element.getId(),element);
