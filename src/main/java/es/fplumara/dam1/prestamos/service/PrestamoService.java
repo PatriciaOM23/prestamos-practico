@@ -29,6 +29,7 @@ public class PrestamoService {
         Prestamo prestamo = new Prestamo(UUID.randomUUID(),idMaterial,profesor,fecha);
         m.setEstadoMaterial(EstadoMaterial.PRESTADO);
         materialRepository.save(m);
+        prestamoRepository.save(prestamo);
         return prestamo;
     }
     void devolverMaterial(String idMaterial){
