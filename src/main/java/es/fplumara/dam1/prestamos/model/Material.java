@@ -3,10 +3,10 @@ package es.fplumara.dam1.prestamos.model;
 import java.util.Set;
 
 public abstract class Material implements Identificable {
-        String id;
-        String nombre;
-        EstadoMaterial estadoMaterial;
-        Set<String> etiquetas;
+        private String id;
+        private String nombre;
+        private EstadoMaterial estadoMaterial;
+        private Set<String> etiquetas;
 
     @Override
     public String getId() {
