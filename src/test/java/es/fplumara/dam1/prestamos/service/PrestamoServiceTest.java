@@ -1,6 +1,8 @@
 package es.fplumara.dam1.prestamos.service;
 
 
+import es.fplumara.dam1.prestamos.exception.MaterialNoDisponibleException;
+import es.fplumara.dam1.prestamos.exception.NoEncontradoException;
 import es.fplumara.dam1.prestamos.model.EstadoMaterial;
 import es.fplumara.dam1.prestamos.model.Material;
 import es.fplumara.dam1.prestamos.model.Portatil;
@@ -18,6 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -47,5 +50,11 @@ class PrestamosServiceTest {
         verify(prestamoRepository).save(any(Prestamo.class));
         assertEquals(EstadoMaterial.PRESTADO,material.getEstadoMaterial());
     }
+    @Test
+    void crearPrestamo_materialNoExiste_lanzaNoEncontrado(){
+        Material material = new Portatil("1","laptop hp", EstadoMaterial.BAJA);
+        Exception exception =  assertThrows(NoEncontradoException.class, () ->
+                prestamoService.crearPrestamo(material.getId(),"Ivan",LocalDate.now()));
+     }
 
 }
