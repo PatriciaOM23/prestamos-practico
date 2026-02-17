@@ -39,9 +39,8 @@ class PrestamosServiceTest {
     // - crearPrestamo_materialNoExiste_lanzaNoEncontrado()
     // - crearPrestamo_materialNoDisponible_lanzaMaterialNoDisponible()
     // - devolverMaterial_ok_cambiaADisponible()
-    //
-    // Requisito: usar mocks de repositorios y verify(...)
 
+    // Requisito: usar mocks de repositorios y verify(...)
     @Test
     void crearPrestamo_ok_cambiaEstado_y_guarda(){
         Material material = new Portatil("1","laptop hp", EstadoMaterial.DISPONIBLE);
@@ -51,6 +50,28 @@ class PrestamosServiceTest {
         assertEquals(EstadoMaterial.PRESTADO,material.getEstadoMaterial());
     }
 
+    @Test
+    void crearPrestamo_materialNoExiste_lanzaNoEncontrado(){
+        Exception exception =  assertThrows(NoEncontradoException.class, () ->
+                prestamoService.crearPrestamo("1","Ivan",LocalDate.now()));
+    }
+
+    @Test
+    void crearPrestamo_materialNoDisponible_lanzaMaterialNoDisponible(){
+        Material material = new Portatil("1","laptop hp", EstadoMaterial.BAJA);
+        when(materialRepository.findById(material.getId())).thenReturn(Optional.of(material));
+        assertThrows(MaterialNoDisponibleException.class, () -> prestamoService.crearPrestamo(material.getId(),"Ivan",LocalDate.now()));
+        verifyNoInteractions(prestamoRepository);
+
+    }
+
+    @Test
+    void devolverMaterial_ok_cambiaADisponible(){
+        Material material = new Portatil("1","laptop hp", EstadoMaterial.PRESTADO);
+        when(materialRepository.findById(material.getId())).thenReturn(Optional.of(material));
+       prestamoService.devolverMaterial(material.getId());
+       assertEquals(EstadoMaterial.DISPONIBLE, material.getEstadoMaterial());
+       verify(materialRepository).save(any(Material.class));
+    }
+
 }
-
-
