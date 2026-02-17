@@ -1,6 +1,7 @@
 package es.fplumara.dam1.prestamos.service;
 
 
+import es.fplumara.dam1.prestamos.exception.MaterialNoDisponibleException;
 import es.fplumara.dam1.prestamos.exception.NoEncontradoException;
 import es.fplumara.dam1.prestamos.model.EstadoMaterial;
 import es.fplumara.dam1.prestamos.model.Material;
@@ -37,7 +38,7 @@ class PrestamosServiceTest {
     // - crearPrestamo_materialNoExiste_lanzaNoEncontrado()
     // - crearPrestamo_materialNoDisponible_lanzaMaterialNoDisponible()
     // - devolverMaterial_ok_cambiaADisponible()
-    //
+
     // Requisito: usar mocks de repositorios y verify(...)
     @Test
     void crearPrestamo_ok_cambiaEstado_y_guarda(){
@@ -50,8 +51,26 @@ class PrestamosServiceTest {
 
     @Test
     void crearPrestamo_materialNoExiste_lanzaNoEncontrado(){
-        Material material = new Portatil("1","laptop hp", EstadoMaterial.BAJA);
         Exception exception =  assertThrows(NoEncontradoException.class, () ->
-                prestamoService.crearPrestamo(material.getId(),"Ivan",LocalDate.now()));
+                prestamoService.crearPrestamo("1","Ivan",LocalDate.now()));
     }
+
+    @Test
+    void crearPrestamo_materialNoDisponible_lanzaMaterialNoDisponible(){
+        Material material = new Portatil("1","laptop hp", EstadoMaterial.BAJA);
+        when(materialRepository.findById(material.getId())).thenReturn(Optional.of(material));
+        assertThrows(MaterialNoDisponibleException.class, () -> prestamoService.crearPrestamo(material.getId(),"Ivan",LocalDate.now()));
+        verifyNoInteractions(prestamoRepository);
+
+    }
+
+    @Test
+    void devolverMaterial_ok_cambiaADisponible(){
+        Material material = new Portatil("1","laptop hp", EstadoMaterial.PRESTADO);
+        when(materialRepository.findById(material.getId())).thenReturn(Optional.of(material));
+       prestamoService.devolverMaterial(material.getId());
+       assertEquals(EstadoMaterial.DISPONIBLE, material.getEstadoMaterial());
+       verify(materialRepository).save(any(Material.class));
+    }
+
 }
