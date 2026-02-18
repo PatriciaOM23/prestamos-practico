@@ -1,12 +1,23 @@
 package es.fplumara.dam1.prestamos.app;
 
-import es.fplumara.dam1.prestamos.model.Material;
-import es.fplumara.dam1.prestamos.model.Prestamo;
+import es.fplumara.dam1.prestamos.csv.CSVMaterialExporter;
+import es.fplumara.dam1.prestamos.csv.CSVMaterialImporter;
+import es.fplumara.dam1.prestamos.csv.RegistroMaterialCsv;
+import es.fplumara.dam1.prestamos.exception.CsvInvalidoException;
+import es.fplumara.dam1.prestamos.model.*;
 import es.fplumara.dam1.prestamos.repository.MaterialRepositoryImpl;
 import es.fplumara.dam1.prestamos.repository.PrestamoRepositoryImpl;
 import es.fplumara.dam1.prestamos.repository.Repository;
 import es.fplumara.dam1.prestamos.service.MaterialService;
 import es.fplumara.dam1.prestamos.service.PrestamoService;
+import org.apache.commons.csv.CSVFormat;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Main de ejemplo para demostrar el flujo mínimo del examen (sin menú complejo).
@@ -15,35 +26,55 @@ import es.fplumara.dam1.prestamos.service.PrestamoService;
 public class Main {
 
     public static void main(String[] args) {
+
         System.out.println("Examen DAM1 - Préstamo de Material (Java 21)");
         Repository<Material> materialRepository = new MaterialRepositoryImpl();
         Repository<Prestamo> prestamoRepository = new PrestamoRepositoryImpl();
         MaterialService materialService = new MaterialService(materialRepository);
         PrestamoService prestamoService = new PrestamoService(prestamoRepository,materialRepository);
-        /*
-         * FLUJO MÍNIMO OBLIGATORIO (lo que debe hacer tu main)
-         *
-         * 1) Crear repositorios en memoria
-         *    - Crear MaterialRepositoryImpl (almacena materiales en memoria).
-         *    - Crear PrestamoRepositoryImpl (almacena préstamos en memoria).
-         * 2) Crear servicios
-         *    - Crear MaterialService usando el repositorio de materiales.
-         *    - Crear PrestamoService usando el repositorio de materiales y el de préstamos.
-         *
-         * 3) Cargar materiales desde CSV (código proporcionado)
-         *    - Usar CsvMaterialImporter para leer "materiales.csv".
-         *    - El importer devuelve registros (por ejemplo RegistroMaterialCsv).
-         *    - Convertir cada registro a tu modelo:
-         *        - Si tipo == "PORTATIL" -> crear Portatil (extra = ramGB)
-         *        - Si tipo == "PROYECTOR" -> crear Proyector (extra = lumens)
-         *      (aplicando estado y etiquetas)
-         *    - Registrar cada Material llamando a MaterialService.registrarMaterial(...)
-         *
-         * 4) Crear un préstamo
-         *    - Elegir un id de material existente (por ejemplo "M001").
-         *    - Llamar a PrestamoService.crearPrestamo("M001", "Nombre Profesor", fecha)
-         *    - Comprobar que el material pasa a estado PRESTADO
-         *
+        CSVMaterialExporter writer = new CSVMaterialExporter();
+        CSVMaterialImporter reader = new CSVMaterialImporter();
+
+        //    public RegistroMaterialCsv {
+        //        tipo = noVacio(tipo, "tipo");
+        //        id = noVacio(id, "id");
+        //        nombre = noVacio(nombre, "nombre");
+        //        estado = noVacio(estado, "estado");
+        //        etiquetas = etiquetas == null ? Set.of() : Collections.unmodifiableSet(new HashSet<>(etiquetas));
+        //    }
+        List<RegistroMaterialCsv> registroMaterial = reader.leer("data/materiales.csv");
+        registroMaterial.forEach(System.out::println);
+        for(RegistroMaterialCsv r : registroMaterial){
+            //REGISTRAR ESTADO MATERIAL A EstadoMaterial.class
+            EstadoMaterial estadoMaterial = EstadoMaterial.BAJA;
+            switch (r.estado()){
+                case "DISPONIBLE" -> estadoMaterial = EstadoMaterial.DISPONIBLE;
+                case "PRESTADO" -> estadoMaterial = EstadoMaterial.PRESTADO;
+                }
+            // REGISTRAR SI ES PORTATIL O PROYECTOR Y REGISTRAR EN FUNCION
+            Material material;
+            switch (r.tipo().trim()){
+                case "PORTATIL" ->
+                        {
+                             material = new Portatil(r.id(),r.nombre(),estadoMaterial,r.extra(),r.etiquetas());
+
+                        }
+
+                case "PROYECTOR" -> material = new Proyector(r.id(),r.nombre(),estadoMaterial,r.extra(),r.etiquetas());
+
+                default -> throw new CsvInvalidoException("Material no válido");
+            }
+          materialService.registrarMaterial(material);
+        }
+        List<Material> materiales = materialService.listar();
+            prestamoService.crearPrestamo(materiales.get(1).getId(),"Ivan",LocalDate.now());
+            //Comprobar que el material pasa a estado PRESTADO
+        System.out.println(materiales.get(1).getEstadoMaterial().toString());
+            System.out.println("-------------------");
+            List<Prestamo> prestamos = prestamoService.listarPrestamos();
+            //PUEDO HACER UN TOSTRING EN MI CLASE
+            prestamos.stream().map(Object::toString).forEach(System.out::println);
+            /*
          * 5) Listar por consola
          *    - Imprimir todos los materiales (MaterialService.listar()) mostrando: id, nombre, estado, tipo.
          *    - Imprimir todos los préstamos (PrestamoService.listarPrestamos()) mostrando: id, idMaterial, profesor, fecha.
@@ -60,5 +91,5 @@ public class Main {
          * - No hace falta interfaz, ni menú, ni pedir datos por teclado: valores fijos y salida por consola es suficiente.
          */
 
-    }
-}
+
+}}

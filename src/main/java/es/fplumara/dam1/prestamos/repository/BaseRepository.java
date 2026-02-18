@@ -3,10 +3,8 @@ package es.fplumara.dam1.prestamos.repository;
 import es.fplumara.dam1.prestamos.model.Identificable;
 import es.fplumara.dam1.prestamos.model.Material;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.lang.classfile.attribute.DeprecatedAttribute;
+import java.util.*;
 
 public class BaseRepository<T extends Identificable> implements Repository<T> {
     private Map<String,T> datos = new HashMap<>();
@@ -21,8 +19,8 @@ public class BaseRepository<T extends Identificable> implements Repository<T> {
     }
 
     @Override
-    public List listAll() {
-        return List.of(datos.values());
+    public List<T> listAll() {
+        return new ArrayList<>(datos.values());
     }
 
     @Override
