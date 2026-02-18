@@ -27,7 +27,6 @@ public class PrestamoService {
             throw new IllegalArgumentException("Los datos son nulos");
         }
         Material m = materialRepository.findById(idMaterial).orElseThrow(() -> new NoEncontradoException("Material no encontrado"));
-
         if(m.getEstadoMaterial() != EstadoMaterial.DISPONIBLE){
             throw new MaterialNoDisponibleException("El material indicado no está disponible");
         }
