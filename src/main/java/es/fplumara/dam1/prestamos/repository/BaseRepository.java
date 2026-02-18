@@ -3,7 +3,6 @@ package es.fplumara.dam1.prestamos.repository;
 import es.fplumara.dam1.prestamos.model.Identificable;
 import es.fplumara.dam1.prestamos.model.Material;
 
-import java.lang.classfile.attribute.DeprecatedAttribute;
 import java.util.*;
 
 public class BaseRepository<T extends Identificable> implements Repository<T> {

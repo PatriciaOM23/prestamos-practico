@@ -71,17 +71,17 @@ public class Main {
             //Comprobar que el material pasa a estado PRESTADO
         System.out.println(materiales.get(1).getEstadoMaterial().toString());
             System.out.println("-------------------");
+
             List<Prestamo> prestamos = prestamoService.listarPrestamos();
-            //PUEDO HACER UN TOSTRING EN MI CLASE
-            prestamos.stream().map(Object::toString).forEach(System.out::println);
-            /*
-         * 5) Listar por consola
-         *    - Imprimir todos los materiales (MaterialService.listar()) mostrando: id, nombre, estado, tipo.
-         *    - Imprimir todos los préstamos (PrestamoService.listarPrestamos()) mostrando: id, idMaterial, profesor, fecha.
-         *
-         * 6) Devolver el material
-         *    - Llamar a PrestamoService.devolverMaterial("M001")
-         *    - Comprobar que vuelve a estado DISPONIBLE
+            System.out.println("PRESTAMOS \n --------");
+            prestamos.forEach(System.out::println);
+
+        System.out.println(" Llamar a PrestamoService.devolverMaterial(indice 1)\n" +
+                "         *    - Comprobar que vuelve a estado DISPONIBLE ");
+            prestamoService.devolverMaterial(materiales.get(1).getId());
+        System.out.println(materiales.get(1).getEstadoMaterial().toString());
+
+        /*
          *
          * 7) Exportar a CSV (código proporcionado)
          *    - Convertir tu lista de Material a la estructura que pida el exporter (por ejemplo RegistroMaterialCsv).

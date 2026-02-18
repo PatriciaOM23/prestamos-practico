@@ -18,6 +18,16 @@ public class Prestamo implements Identificable{
     }
 
     @Override
+    public String toString() {
+        return "Prestamo{" +
+                "id=" + id +
+                ", idMaterial='" + idMaterial + '\'' +
+                ", profesor='" + profesor + '\'' +
+                ", fecha=" + fecha +
+                '}';
+    }
+
+    @Override
     public String getId() {
         return id.toString();
     }
