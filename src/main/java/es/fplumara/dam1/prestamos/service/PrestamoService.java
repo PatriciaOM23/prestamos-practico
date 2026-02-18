@@ -17,7 +17,12 @@ public class PrestamoService {
     public Repository<Material> materialRepository;
     private Repository<Prestamo> prestamoRepository;
 
-    Prestamo crearPrestamo(String idMaterial,String profesor, LocalDate fecha){
+    public PrestamoService(Repository<Prestamo> prestamoRepository, Repository<Material> materialRepository) {
+        this.prestamoRepository = prestamoRepository;
+        this.materialRepository = materialRepository;
+    }
+
+    Prestamo crearPrestamo(String idMaterial, String profesor, LocalDate fecha){
         if(idMaterial.isBlank() || profesor.isBlank() || fecha == null){
             throw new IllegalArgumentException("Los datos son nulos");
         }

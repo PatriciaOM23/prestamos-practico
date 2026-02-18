@@ -11,6 +11,11 @@ import java.util.List;
 
 public class MaterialService {
     private Repository<Material> materialRepository;
+
+    public MaterialService(Repository<Material> materialRepository) {
+        this.materialRepository = materialRepository;
+    }
+
     void registrarMaterial(Material m){
         if(materialRepository.findById(m.getId()).isPresent()){
             throw new DuplicadoException("Ese material ya existe");
