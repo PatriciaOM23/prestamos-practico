@@ -16,15 +16,16 @@ public class MaterialService {
         this.materialRepository = materialRepository;
     }
 
-    void registrarMaterial(Material m){
+    public void registrarMaterial(Material m){
         if(materialRepository.findById(m.getId()).isPresent()){
             throw new DuplicadoException("Ese material ya existe");
         }
-        if(m == null || m.getId().isBlank()){
+        if(m.getId().isBlank()){
             throw new IllegalArgumentException("El material no puede estar vacío");
         }
+        materialRepository.save(m);
     }
-    void darDeBaja(String idMaterial) {
+    public void darDeBaja(String idMaterial) {
         Material m = materialRepository.findById(idMaterial).orElseThrow(() -> new NoEncontradoException("El material indicado no existe"));
         if(m.getEstadoMaterial() == EstadoMaterial.BAJA){
             throw new MaterialNoDisponibleException("El material indicado no está disponible");
@@ -33,7 +34,7 @@ public class MaterialService {
         materialRepository.save(m);
     }
 
-    List<Material> listar(){
+    public List<Material> listar(){
         return materialRepository.listAll().stream().toList();
     }
 }

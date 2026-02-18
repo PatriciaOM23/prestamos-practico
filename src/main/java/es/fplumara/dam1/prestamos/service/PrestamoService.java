@@ -22,7 +22,7 @@ public class PrestamoService {
         this.materialRepository = materialRepository;
     }
 
-    Prestamo crearPrestamo(String idMaterial, String profesor, LocalDate fecha){
+    public Prestamo crearPrestamo(String idMaterial, String profesor, LocalDate fecha){
         if(idMaterial.isBlank() || profesor.isBlank() || fecha == null){
             throw new IllegalArgumentException("Los datos son nulos");
         }
@@ -36,7 +36,7 @@ public class PrestamoService {
         prestamoRepository.save(prestamo);
         return prestamo;
     }
-    void devolverMaterial(String idMaterial){
+    public void devolverMaterial(String idMaterial){
         if(idMaterial == null || idMaterial.isBlank()){
             throw new IllegalArgumentException("Es necesario aportar la id del material a devolver");
         }
@@ -47,7 +47,7 @@ public class PrestamoService {
         m.setEstadoMaterial(EstadoMaterial.DISPONIBLE);
         materialRepository.save(m);
     }
-    List<Prestamo> listarPrestamos(){
+    public List<Prestamo> listarPrestamos(){
         return prestamoRepository.listAll().stream().toList();
     }
 

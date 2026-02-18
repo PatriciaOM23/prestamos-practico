@@ -6,12 +6,21 @@ public abstract class Material implements Identificable {
         private String id;
         private String nombre;
         private EstadoMaterial estadoMaterial;
+        private int extra;
         private Set<String> etiquetas;
 
     public Material(String id, String nombre, EstadoMaterial estadoMaterial) {
         this.id = id;
         this.nombre = nombre;
         this.estadoMaterial = estadoMaterial;
+    }
+
+    public Material(String id, String nombre, EstadoMaterial estadoMaterial, int extra, Set<String> etiquetas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.estadoMaterial = estadoMaterial;
+        this.extra = extra;
+        this.etiquetas = etiquetas;
     }
 
     @Override
