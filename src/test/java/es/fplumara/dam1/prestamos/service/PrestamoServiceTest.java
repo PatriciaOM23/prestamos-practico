@@ -1,6 +1,8 @@
 package es.fplumara.dam1.prestamos.service;
 
 
+import es.fplumara.dam1.prestamos.exception.MaterialNoDisponibleException;
+import es.fplumara.dam1.prestamos.exception.NoEncontradoException;
 import es.fplumara.dam1.prestamos.model.EstadoMaterial;
 import es.fplumara.dam1.prestamos.model.Material;
 import es.fplumara.dam1.prestamos.model.Portatil;
@@ -19,9 +21,9 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PrestamosServiceTest {
