@@ -24,6 +24,17 @@ public abstract class Material implements Identificable {
     }
 
     @Override
+    public String toString() {
+        return "Material{" +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", estadoMaterial=" + estadoMaterial +
+                ", extra=" + extra +
+                ", etiquetas=" + etiquetas +
+                '}';
+    }
+
+    @Override
     public String getId() {
         return id;
     }
