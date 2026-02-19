@@ -16,7 +16,7 @@ public class Portatil extends Material {
     }
 
     @Override
-    String getTipo() {
+    public String getTipo() {
         return "portatil";
     }
 }

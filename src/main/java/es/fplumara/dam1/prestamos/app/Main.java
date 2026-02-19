@@ -17,6 +17,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -79,14 +80,13 @@ public class Main {
         prestamoService.devolverMaterial(materiales.get(1).getId());
         System.out.println(materiales.get(1).getEstadoMaterial().toString());
 
-        /*
-         *
-         * 7) Exportar a CSV (código proporcionado)
-         *    - Convertir tu lista de Material a la estructura que pida el exporter (por ejemplo RegistroMaterialCsv).
-         *    - Usar CsvMaterialExporter para escribir "salida_materiales.csv".
-         *
-         * Nota:
-         * - No hace falta interfaz, ni menú, ni pedir datos por teclado: valores fijos y salida por consola es suficiente.
-         */
+         // 7) Exportar a CSV
+         List<RegistroMaterialCsv> registros = new ArrayList<>();
+        for(Material m : materiales){
+        registros.add( new RegistroMaterialCsv(m.getTipo(),m.getId(),m.getNombre(),m.getEstadoMaterial().toString(),m.getExtra(),m.getEtiquetas()));
+        }
+        //for que recorra materiales e ir sacando las variables y creando la lista de registros
+
+        writer.escribir("data/salida_materiales.csv",registros);
 
     }}

@@ -1,0 +1,6 @@
+tipo,id,nombre,estado,extra,etiquetas
+proyector,M011,Proyector BenQ,PRESTADO,3000,aula3|video
+proyector,M010,Proyector Epson,DISPONIBLE,3200,salon|video
+portatil,M003,Portátil Biblioteca,BAJA,8,biblioteca|ofimatica
+portatil,M002,Portátil Aula 2,DISPONIBLE,8,aula2|ofimatica
+portatil,M001,Portátil Aula 1,DISPONIBLE,16,aula1|ofimatica
