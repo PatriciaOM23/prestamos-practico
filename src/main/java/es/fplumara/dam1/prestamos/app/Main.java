@@ -72,7 +72,6 @@ public class Main {
         System.out.println(materiales.get(1).getEstadoMaterial().toString());
             System.out.println("-------------------");
             List<Prestamo> prestamos = prestamoService.listarPrestamos();
-            //PUEDO HACER UN TOSTRING EN MI CLASE
             prestamos.stream().map(Object::toString).forEach(System.out::println);
             /*
          * 5) Listar por consola
