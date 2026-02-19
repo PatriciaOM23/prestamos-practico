@@ -8,7 +8,7 @@ public abstract class Material implements Identificable {
         private EstadoMaterial estadoMaterial;
         private int extra;
         private Set<String> etiquetas;
-
+        private String tipo;
     public Material(String id, String nombre, EstadoMaterial estadoMaterial) {
         this.id = id;
         this.nombre = nombre;
@@ -55,5 +55,9 @@ public abstract class Material implements Identificable {
         this.estadoMaterial = estadoMaterial;
     }
 
-    abstract String getTipo();
+    public int getExtra() {
+        return extra;
+    }
+
+    public abstract String getTipo();
 }
