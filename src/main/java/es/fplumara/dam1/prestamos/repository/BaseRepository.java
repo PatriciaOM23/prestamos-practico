@@ -6,7 +6,12 @@ import es.fplumara.dam1.prestamos.model.Material;
 import java.util.*;
 
 public class BaseRepository<T extends Identificable> implements Repository<T> {
-    private Map<String,T> datos = new HashMap<>();
+    private Map<String,T> datos;
+
+    public BaseRepository() {
+        this.datos = new HashMap<>();
+    }
+
     @Override
     public void save(T element) {
     datos.put(element.getId(),element);
