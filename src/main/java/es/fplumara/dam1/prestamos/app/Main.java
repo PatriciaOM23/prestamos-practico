@@ -24,6 +24,7 @@ import java.util.List;
  * Main de ejemplo para demostrar el flujo mínimo del examen (sin menú complejo).
  * La idea es que este método ejecute una "demo" por consola.
  */
+
 public class Main {
 
     public static void main(String[] args) {
@@ -36,13 +37,6 @@ public class Main {
         CSVMaterialExporter writer = new CSVMaterialExporter();
         CSVMaterialImporter reader = new CSVMaterialImporter();
 
-        //    public RegistroMaterialCsv {
-        //        tipo = noVacio(tipo, "tipo");
-        //        id = noVacio(id, "id");
-        //        nombre = noVacio(nombre, "nombre");
-        //        estado = noVacio(estado, "estado");
-        //        etiquetas = etiquetas == null ? Set.of() : Collections.unmodifiableSet(new HashSet<>(etiquetas));
-        //    }
         List<RegistroMaterialCsv> registroMaterial = reader.leer("data/materiales.csv");
         registroMaterial.forEach(System.out::println);
         for(RegistroMaterialCsv r : registroMaterial){
@@ -58,9 +52,7 @@ public class Main {
                 case "PORTATIL" ->
                         {
                              material = new Portatil(r.id(),r.nombre(),estadoMaterial,r.extra(),r.etiquetas());
-
                         }
-
                 case "PROYECTOR" -> material = new Proyector(r.id(),r.nombre(),estadoMaterial,r.extra(),r.etiquetas());
 
                 default -> throw new CsvInvalidoException("Material no válido");
@@ -74,19 +66,16 @@ public class Main {
             System.out.println("-------------------");
             List<Prestamo> prestamos = prestamoService.listarPrestamos();
             prestamos.forEach(System.out::println);
-
         System.out.println(" Llamar a PrestamoService.devolverMaterial(indice 1)\n" +
                 "         *    - Comprobar que vuelve a estado DISPONIBLE ");
         prestamoService.devolverMaterial(materiales.get(1).getId());
         System.out.println(materiales.get(1).getEstadoMaterial().toString());
-
          // 7) Exportar a CSV
          List<RegistroMaterialCsv> registros = new ArrayList<>();
         for(Material m : materiales){
         registros.add( new RegistroMaterialCsv(m.getTipo(),m.getId(),m.getNombre(),m.getEstadoMaterial().toString(),m.getExtra(),m.getEtiquetas()));
         }
         //for que recorra materiales e ir sacando las variables y creando la lista de registros
-
         writer.escribir("data/salida_materiales.csv",registros);
 
     }}

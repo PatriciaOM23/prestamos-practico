@@ -60,6 +60,7 @@ class PrestamosServiceTest {
         when(materialRepository.findById(material.getId())).thenReturn(Optional.of(material));
         assertThrows(MaterialNoDisponibleException.class, () -> prestamoService.crearPrestamo(material.getId(),"Ivan",LocalDate.now()));
         verifyNoInteractions(prestamoRepository);
+
     }
 
     @Test
